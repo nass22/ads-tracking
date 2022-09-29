@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use DB;
+use RealRashid\SweetAlert\Facades\Alert;
     
 class RoleController extends Controller
 {
@@ -31,7 +32,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-        $roles = Role::orderBy('id','DESC')->paginate(5);
+        $roles = Role::orderBy('id','DESC')->simplePaginate(10);
         return view('roles.index',compact('roles'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -54,17 +55,27 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $this->validate($request, [
             'name' => 'required|unique:roles,name',
             'permission' => 'required',
         ]);
+
+        try {
+            $role = Role::create(['name' => $request->input('name')]);
+            $role->syncPermissions($request->input('permission'));
+            
+            Alert::success('Success','Role created successfully.');
+            
+            return redirect()->route('roles.index');
+        } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+
+            return back()->withInput();
+        }
+        
     
-        $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
-    
-        return redirect()->route('roles.index')
-                        ->with('success','Role created successfully');
+        
     }
     /**
      * Display the specified resource.

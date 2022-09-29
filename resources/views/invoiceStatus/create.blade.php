@@ -13,7 +13,6 @@
     </div>
 </div>
 
-
 @if ($errors->any())
     <div class="alert alert-danger">
         <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -25,8 +24,7 @@
     </div>
 @endif
 
-
-<form method="POST">
+<form method="POST" action="{{route('invoice_status.store')}}">
     @csrf
 
 
@@ -35,7 +33,7 @@
         <div class="col-xs-12 col-sm-12 col-md-12 mb-2">
             <div class="form-group">
                 <strong>Name:</strong>
-                <input type="text" name="name" id="name" class="form-control" placeholder="Invoice Status">
+                <input type="text" name="name" id="name" class="form-control" placeholder="Invoice Status" value="{{old('name')}}" required>
             </div>
         </div>
 
@@ -47,24 +45,24 @@
 
 <script>
           // STORE 
-          $(document).ready(function(){
-            $('#add').on('click', function(e){
-                e.preventDefault();
-                $.ajax({
-                    url: "/invoice_status",
-                    type: 'post',
-                    data: {
-                        "_token" : "{{ csrf_token() }}",
-                        name : $('#name').val(),
-                    },
-                    success: function(result){
-                        console.log(result);
-                    },
-                    error: function(result){
-                        console.log(result);
-                    }
-                });
-            });
-        });
+        //   $(document).ready(function(){
+        //     $('#add').on('click', function(e){
+        //         e.preventDefault();
+        //         $.ajax({
+        //             url: "/invoice_status",
+        //             type: 'post',
+        //             data: {
+        //                 "_token" : "{{ csrf_token() }}",
+        //                 name : $('#name').val(),
+        //             },
+        //             success: function(result){
+        //                 console.log(result);
+        //             },
+        //             error: function(result){
+        //                 console.log(result);
+        //             }
+        //         });
+        //     });
+        // });
 </script>
 @endsection

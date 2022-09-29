@@ -17,9 +17,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    function __construct()
+    {
+         $this->middleware('permission:user-list|user-create|user-edit|user-delete', ['only' => ['index','store']]);
+         $this->middleware('permission:user-create', ['only' => ['create','store']]);
+         $this->middleware('permission:user-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:user-delete', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
-        $data = User::orderBy('id','DESC')->paginate(5);
+        $data = User::orderBy('id','DESC')->simplePaginate(10);
         return view('users.index',compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -52,10 +61,12 @@ class UserController extends Controller
     
         $input = $request->all();
         $input['password'] = Hash::make($input['password']);
-    
+        $role = $request->input('roles');
+        $input['role'] = $role[0];
+        // dd($input['role']);
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
-    
+        
         return redirect()->route('users.index')
                         ->with('success','User created successfully');
     }

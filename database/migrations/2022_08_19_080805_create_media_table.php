@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('abbreviation');
-            $table->text('type');
-            $table->text('placement');
+            $table->string('abbreviation')->unique();
+            $table->text('type')->nullable();
+            $table->text('placement')->nullable();
+            $table->string('numero')->nullable();
             $table->timestamps();
         });
     }

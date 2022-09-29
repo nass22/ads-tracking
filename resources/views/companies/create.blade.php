@@ -8,11 +8,10 @@
             <h2>Add New Company</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('companies.index') }}"> Back</a>
+            <a class="btn btn-primary" href="{{ route('companies.index') }}">Back</a>
         </div>
     </div>
 </div>
-
 
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -26,7 +25,7 @@
 @endif
 
 
-<form method="POST">
+<form method="POST" action="{{route('companies.store')}}">
     @csrf
 
 
@@ -35,14 +34,14 @@
         <div class="col-xs-12 col-sm-12 col-md-12 mb-2">
             <div class="form-group">
                 <strong>Name:</strong>
-                <input type="text" name="name" id="name" class="form-control" placeholder="Name">
+                <input type="text" name="name" id="name" class="form-control" placeholder="Name" value="{{old('name')}}" >
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 mb-2">
             <div class="form-group">
                 <strong>Abbreviation:</strong>
-                <input type="text" name="abbreviation" id="abbreviation" class="form-control" placeholder="Abbreviation">
+                <input type="text" name="abbreviation" id="abbreviation" class="form-control" placeholder="Abbreviation" value="{{old('abbreviation')}}">
             </div>
         </div>
 
@@ -54,25 +53,25 @@
 
 <script>
           // STORE 
-          $(document).ready(function(){
-            $('#add').on('click', function(e){
-                e.preventDefault();
-                $.ajax({
-                    url: "/companies",
-                    type: 'post',
-                    data: {
-                        "_token" : "{{ csrf_token() }}",
-                        name : $('#name').val(),
-                        abbreviation : $('#abbreviation').val()
-                    },
-                    success: function(result){
-                        console.log(result);
-                    },
-                    error: function(result){
-                        console.log(result);
-                    }
-                });
-            });
-        });
+        //   $(document).ready(function(){
+        //     $('#add').on('click', function(e){
+        //         e.preventDefault();
+        //         $.ajax({
+        //             url: "/companies",
+        //             type: 'post',
+        //             data: {
+        //                 "_token" : "{{ csrf_token() }}",
+        //                 name : $('#name').val(),
+        //                 abbreviation : $('#abbreviation').val()
+        //             },
+        //             success: function(result){
+        //                 console.log(result);
+        //             },
+        //             error: function(result){
+        //                 console.log(result);
+        //             }
+        //         });
+        //     });
+        // });
 </script>
 @endsection

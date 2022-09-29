@@ -8,14 +8,14 @@
             <h2>Edit Invoice Status</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href="{{ route('invoice_status.index') }}">Back</a>
+            <a class="btn btn-primary" href="{{ url()->previous() }}">Back</a>
         </div>
     </div>
 </div>
 
 
 @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger mt-2">
         <strong>Whoops!</strong> There were some problems with your input.<br><br>
         <ul>
             @foreach ($errors->all() as $error)
@@ -25,8 +25,7 @@
     </div>
 @endif
 
-
-<form action="{{ route('invoice_status.update',$invoice_status->id) }}" method="POST">
+<form action="{{ route('invoice_status.update', $invoice_status->id) }}" method="POST">
     @csrf
     @method('PUT')
 

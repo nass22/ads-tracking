@@ -3,22 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\TryCatch;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CompanyController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:company-list|company-create|company-edit|company-delete|company-export', ['only' => ['index','show']]);
-         $this->middleware('permission:company-create', ['only' => ['create','store']]);
-         $this->middleware('permission:company-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:company-delete', ['only' => ['destroy']]);
-         $this->middleware('permission:company-export', ['only' => ['export']]);
+         $this->middleware('permission:companies-list|companies-create|companies-edit|companies-delete|companies-export', ['only' => ['index','show']]);
+         $this->middleware('permission:companies-create', ['only' => ['create','store']]);
+         $this->middleware('permission:companies-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:companies-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:companies-export', ['only' => ['export']]);
     }
 
     public function index()
     {
-        $companies = Company::latest()->paginate(5);
+        $companies = Company::orderBy('name', 'asc')->simplePaginate(10);
         return view('companies.index',compact('companies'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -34,11 +37,21 @@ class CompanyController extends Controller
             'name' => 'required',
             'abbreviation' => 'required'
         ]);
-        
-        Company::create($request->all());
-    
-        return redirect()->route('companies.index')
-                        ->with('success','Company created successfully.');
+
+        try {
+            Company::create([
+                'name' => $request->name,
+                'abbreviation' => Str::upper($request->abbreviation)
+            ]);
+            Alert::success('Success','Company successfully created.');
+
+            return redirect()->route('companies.index');
+
+        } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+
+            return back()->withInput();
+        }
     }
 
     
@@ -53,19 +66,36 @@ class CompanyController extends Controller
             'name' => 'required',
             'abbreviation' => 'required',
         ]);
-    
-        $company->update($request->all());
-    
-        return redirect()->route('companies.index')
-                        ->with('success','Company updated successfully');
+
+        try {
+            $company->name = $request->name;
+            $company->abbreviation = Str::upper($request->abbreviation);
+            $company->update();
+
+            Alert::success('Success','Company successfully updated.');
+
+            return redirect()->route('companies.index');
+        } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+
+            return back()->withInput();
+        }
+        
     }
 
     public function destroy(Company $company)
     {
-        $company->delete();
-    
-        return redirect()->route('companies.index')
-                        ->with('success','Company deleted successfully');
-    }    
+        try {
+            $company->delete();
+            Alert::success('Success','Company successfully deleted.');
+
+            return redirect()->route('companies.index');
+        } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+
+            return back()->withInput();
+        }
+        
+    }
 
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Media;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MediaController extends Controller
 {
@@ -17,7 +18,7 @@ class MediaController extends Controller
     }
 
     public function index(){
-        $all_media = Media::latest()->paginate(5);
+        $all_media = Media::latest()->simplePaginate(10);
         return view('medias.index',compact('all_media'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -33,21 +34,51 @@ class MediaController extends Controller
 
     public function store(Request $request){
         request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:media',
             'abbreviation' => 'required',
             'type' => 'nullable',
             'placement' => 'nullable',
+            'numero' => 'nullable',
         ]);
 
-        $media = new Media;
-        $media->name = $request->name;
-        $media->abbreviation = $request->abbreviation;
-        $media->type = $request->type;
-        $media->placement = $request->placement;
-        $media->save();
-    
-        return redirect()->route('medias.index')
-                        ->with('success','Media created successfully.');
+        $stringType = $request->type;
+        $arrayType = explode(',', $stringType);
+        $newArrayType = array();
+        foreach ($arrayType as $type) {
+            array_push($newArrayType, trim($type));
+        }
+        
+        $stringPlacement = $request->placement;
+        $arrayPlacement = explode(',', $stringPlacement);
+        $newArrayPlacement = array();
+        foreach ($arrayPlacement as $type) {
+            array_push($newArrayPlacement, trim($type));
+        }
+
+        $stringNumero = $request->numero;
+        $arrayNumero = explode(',', $stringNumero);
+        $newArrayNumero = array();
+        foreach ($arrayNumero as $numero) {
+            array_push($newArrayNumero, strtoupper(trim($numero)));
+        }
+
+        try {
+            $media = new Media;
+            $media->name = $request->name;
+            $media->abbreviation = strtoupper($request->abbreviation);
+            $media->type = implode(",",$newArrayType);
+            $media->placement = implode(",",$newArrayPlacement);
+            $media->numero = implode(",", $newArrayNumero);
+            $media->save();
+        
+            Alert::success('Success', 'Media successfully created.');
+
+            return redirect()->route('medias.index');
+        } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+
+            return back()->withInput();
+        }
     }
 
     public function edit(Media $media)
@@ -61,20 +92,61 @@ class MediaController extends Controller
             'name' => 'required',
             'abbreviation' => 'required',
             'type' => 'nullable',
-            'placement' => 'nullable'
+            'placement' => 'nullable',
+            'numero' => 'nullable'
         ]);
-    
-        $media->update($request->all());
-    
-        return redirect()->route('medias.index')
-                        ->with('success','Media updated successfully');
+
+        $stringType = $request->type;
+        $arrayType = explode(',', $stringType);
+        $newArrayType = array();
+        foreach ($arrayType as $type) {
+            array_push($newArrayType, trim($type));
+        }
+        
+        $stringPlacement = $request->placement;
+        $arrayPlacement = explode(',', $stringPlacement);
+        $newArrayPlacement = array();
+        foreach ($arrayPlacement as $type) {
+            array_push($newArrayPlacement, trim($type));
+        }
+
+        $stringNumero = $request->numero;
+        $arrayNumero = explode(',', $stringNumero);
+        $newArrayNumero = array();
+        foreach ($arrayNumero as $numero) {
+            array_push($newArrayNumero, strtoupper(trim($numero)));
+        }
+        
+        try {
+            $media->name = $request->name;
+            $media->abbreviation = strtoupper($request->abbreviation);
+            $media->type = implode(",",$newArrayType);
+            $media->placement = implode(",",$newArrayPlacement);
+            $media->numero = implode(",", $newArrayNumero);
+            $media->update();
+            
+            Alert::success('Success', 'Media successfully updated.');
+
+            return redirect()->route('medias.index');
+        } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+
+            return back()->withInput();
+        }
+
     }
 
     public function destroy(Media $media)
     {
-        $media->delete();
-    
-        return redirect()->route('medias.index')
-                        ->with('success','Media deleted successfully');
+        try {
+            $media->delete();
+            Alert::success('Success', 'Media successfully deleted.');
+            
+            return redirect()->route('medias.index');
+        } catch (\Throwable $th) {
+            Alert::error('Error', $th->getMessage());
+
+            return back()->withInput();
+        }
     } 
 }

@@ -12,4 +12,8 @@ class InvoiceStatus extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function insertion(){
+        return $this->hasMany(Insertion::class);
+    }
 }

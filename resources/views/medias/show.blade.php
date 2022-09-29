@@ -8,7 +8,7 @@
                 <h2>Show Media</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('medias.index') }}">Back</a>
+                <a class="btn btn-primary" href="{{ url()->previous() }}">Back</a>
             </div>
         </div>
     </div>

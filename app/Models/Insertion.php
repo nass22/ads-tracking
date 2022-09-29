@@ -13,18 +13,19 @@ class Insertion extends Model
         'user_id', 
         'job_id',
         'company',
-        'brand',
-        'comment',
         'media',
+        'issue_nr',
         'type',
         'placement',
-        'month',
-        'issue_nr',
-        'number_of_pages',
+        'brand',
+        'comment',
         'quantity',
         'fare',
+        'invoice_nr',
         'invoiced',
         'year',
+        'RCVD',
+        'status',
     ];
 
     public function user(){
@@ -37,5 +38,9 @@ class Insertion extends Model
 
     public function media(){
         return $this->belongsTo(Media::class);
+    }
+
+    public function invoiceStatus(){
+        return $this->belongsTo(InvoiceStatus::class);
     }
 }

@@ -8,7 +8,7 @@
                 <h2> Show Insertion</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('insertions.index') }}"> Back</a>
+                <a class="btn btn-primary" href="{{ url()->previous() }}">Back</a>
             </div>
         </div>
     </div>
@@ -95,13 +95,6 @@
 
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Number of pages:</strong>
-                {{ $insertion->number_of_pages }}
-            </div>
-        </div>
-
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="form-group">
                 <strong>Quantity:</strong>
                 {{ $insertion->quantity }}
             </div>
@@ -118,6 +111,13 @@
             <div class="form-group">
                 <strong>Invoiced:</strong>
                 {{ $insertion->invoiced }}
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Invoice Nr:</strong>
+                {{ $insertion->invoice_nr }}
             </div>
         </div>
 

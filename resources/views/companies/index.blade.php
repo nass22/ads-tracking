@@ -8,19 +8,12 @@
             <h2>Companies</h2>
         </div>
         <div class="pull-right">
-            @can('insertion-create')
-            <a class="btn btn-success" href="{{ route('companies.create') }}"> Create New company</a>
+            @can('companies-create')
+            <a class="btn btn-success" href="{{ route('companies.create') }}">Create New company</a>
             @endcan
         </div>
     </div>
 </div>
-
-
-@if ($message = Session::get('success'))
-    <div class="alert alert-success mt-2">
-        <p>{{ $message }}</p>
-    </div>
-@endif
 
 
 <table class="table table-bordered mt-3">
@@ -28,26 +21,26 @@
         <th>No</th>
         <th>Name</th>
         <th>Abbreviation</th>
-        <th width="280px">Action</th>
+        <th width="105px">Action</th>
     </tr>
     @foreach ($companies as $company)
     <tr>
-        <td>{{ $loop->index }}</td>
+        <td>{{ $loop->index+1 }}</td>
         <td>{{ $company->name }}</td>
         <td>{{ $company->abbreviation }}</td>
         <td>
 
             <form action="{{ route('companies.destroy',$company->id) }}" method="POST">
                 
-                @can('company-edit')
-                <a class="btn btn-primary" href="{{ route('companies.edit',$company->id) }}">Edit</a>
+                @can('companies-edit')
+                <a class="btn btn-primary" href="{{ route('companies.edit',$company->id) }}"><i class="fa-regular fa-pen-to-square"></i></a>
                 @endcan
 
 
                 @csrf
                 @method('DELETE')
-                @can('company-delete')
-                <button type="submit" class="btn btn-danger">Delete</button>
+                @can('companies-delete')
+                    <button type="submit" class="btn btn-danger delete-confirm"><i class="fa-solid fa-trash"></i></button>
                 @endcan
             </form>
         </td>
@@ -56,5 +49,20 @@
 </table>
 
 
-{!! $companies->links() !!}
+<script>
+    $('.delete-confirm').on('click', function (event) {
+        var form =  $(this).closest("form");
+        event.preventDefault();
+        new swal({
+            title: 'Are you sure?',
+            text: 'This record and it`s details will be permanantly deleted!',
+            icon: 'warning',
+            buttons: ["Cancel", "Yes!"],
+        }).then(function(value) {
+            if (value) {
+                form.submit();
+            }
+        });
+    });
+</script>
 @endsection
