@@ -145,9 +145,7 @@ class InsertionController extends Controller
             'comment' => 'nullable',
             'quantity' => 'required|integer',
             'fare' => 'required',
-            'invoice_nr' => 'nullable',
             'invoiced' => 'nullable',
-            'year' => 'required',
             'rcvd' => 'nullable',
         ]);
 
@@ -173,10 +171,12 @@ class InsertionController extends Controller
             $insertion->comment = $request->comment;
             $insertion->quantity = $request->quantity;
             $insertion->fare = $request->fare;
-            $insertion->invoice_nr = $request->invoice_nr;
 
-            if($request->invoice_nr != null){
-                $insertion->invoiced = 2;
+            $invoiced_id = $request->invoiced;
+            $invoiced_status = InvoiceStatus::where('id', $invoiced_id)->first();
+
+            if($invoiced_status->name == "YES"){
+                $insertion->invoiced = $request->invoiced;
                 $insertion->invoice_status = "CLOSE";
             } else {
                 // A MODIF SI ON GENRE LE STATUS EN BACK -> $insertion->invoiced = "NO";
@@ -184,10 +184,10 @@ class InsertionController extends Controller
                 $insertion->invoice_status = "OPEN";
             }
 
-            $insertion->year = $request->year;
-
             if($request->checkRCVD != null){
                 $insertion->rcvd = "YES";
+            } else {
+                $insertion->rcvd = "NO";
             }
             
             $insertion->save();
@@ -245,10 +245,8 @@ class InsertionController extends Controller
             'comment' => 'nullable',
             'quantity' => 'required|integer',
             'fare' => 'required',
-            'invoice_nr' => 'nullable',
             'invoiced' => 'nullable',
             'rcvd' => 'nullable',
-            'year' => 'required',
         ]);
 
         $media = json_decode($request->media);
@@ -271,21 +269,23 @@ class InsertionController extends Controller
             $insertion->comment = $request->comment;
             $insertion->quantity = $request->quantity;
             $insertion->fare = $request->fare;
-            $insertion->invoice_nr = $request->invoice_nr;
 
-            if($request->invoice_nr != null){
-                $insertion->invoiced = 2;
+            $invoiced_id = $request->invoiced;
+            $invoiced_status = InvoiceStatus::where('id', $invoiced_id)->first();
+
+            if($invoiced_status->name == "YES"){
+                $insertion->invoiced = $request->invoiced;
                 $insertion->invoice_status = "CLOSE";
             } else {
                 // A MODIF SI ON GENRE LE STATUS EN BACK -> $insertion->invoiced = "NO";
                 $insertion->invoiced = $request->invoiced;
                 $insertion->invoice_status = "OPEN";
             }
-
-            $insertion->year = $request->year;
-
+           
             if($request->checkRCVD != null){
                 $insertion->rcvd = "YES";
+            } else {
+                $insertion->rcvd = "NO";
             }
 
             $insertion->update();

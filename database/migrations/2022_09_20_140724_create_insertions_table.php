@@ -27,9 +27,7 @@ return new class extends Migration
             $table->text('comment')->nullable();
             $table->string('quantity');
             $table->float('fare', 10, 2);
-            $table->string('invoice_nr')->nullable();
             $table->foreignId('invoiced')->constrained('invoice_statuses')->onUpdate('cascade');
-            $table->string('year');
             $table->string('rcvd')->default('NO');
             $table->timestamps();
         });

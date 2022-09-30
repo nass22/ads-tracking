@@ -32,7 +32,7 @@
 		@method('PUT')
 		@if (Auth::user()->role == 'Admin')
 			<div class="mt-3 form-check">
-				<input class="form-check-input" type="checkbox" value="check" id="checkRCVD" name="checkRCVD">
+				<input class="form-check-input" type="checkbox" id="checkRCVD" name="checkRCVD" {{  ($insertion->rcvd == "YES" ? 'checked' : '') }}>
 				<label class="form-check-label" for="checkRCVD">
 				<b>Received?</b> 
 				</label>
@@ -149,11 +149,13 @@
 				<div class="form-group">
 					<strong>Issue Nr:</strong>
 					@php
-						$all_issue = App\Models\IssueNrs::where('id', $insertion->media)->get();
+						$all_issue = App\Models\IssueNrs::where('media_id', $insertion->media)->get();
 					@endphp
 					<select class="form-select" aria-label="Issue select" name="issue_nr" >
 						<option selected disabled>Select Issue</option>
 							@foreach ($all_issue as $issue)
+						
+							
 								<option value="{{$issue->id}}" {{$insertion->issue_nr == $issue->id ? 'selected' : ''}}>{{$issue->final_issue}}</option>
 							@endforeach
 					</select>
@@ -213,13 +215,6 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12 col-sm-12 col-md-12">
-				<div class="form-group">
-					<strong>Year:</strong>
-					<input type="text" id="year" name="year" value="{{ $insertion->year }}" class="form-control" placeholder="year">
-				</div>
-			</div>
-
 			<div class="col-xs-12 col-sm-12 col-md-12 text-center mt-3">
 			<button type="submit" class="btn btn-primary" id='add'>Submit</button>
 			</div>
@@ -270,28 +265,6 @@
     }
 
         $(document).ready(function(){
-			// DISPLAY ONLY MONTH IN INPUT MONTH
-			$("#month").datepicker({
-            format: "mm",
-            viewMode: "months", 
-            minViewMode: "months",
-            multidate: true
-        	});
-
-			// DISPLAY ONLY YEAR IN CALENDAR
-            $("#year").datepicker({
-                format: "yyyy",
-                viewMode: "years", 
-                minViewMode: "years",
-                ultidate: true
-            });
-
-			// ADD INPUT_NR 
-			if($('#invoiced').val() == 2){
-				let invoice_nr = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="invoice_nrDiv"><div class="form-group"><strong>Invoice Nr:</strong><input type="text" name="invoice_nr" value="{{ $insertion->invoice_nr }}"class="form-control" placeholder="Invoice Nr"></div></div>'
-
-				$('#invoice_statusDiv').after(invoice_nr);
-			}
 
 			// DISPLAY TYPE & PLACEMENT ON MEDIA CHANGE
 			$('#media').change(function(){
@@ -336,16 +309,6 @@
 			});
         })
 
-		// DISPLAY INVOICE_NR IF INVOICED = YES
-		$('#invoiced').change(function(){
-			$('#invoice_nrDiv').remove();
-
-			if($('#invoiced').val() == 2){
-				let invoice_nr = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="invoice_nrDiv"><div class="form-group"><strong>Invoice Nr:</strong><input type="text" name="invoice_nr" value="{{ $insertion->invoice_nr }}"class="form-control" placeholder="Invoice Nr"></div></div>'
-
-				$('#invoice_statusDiv').after(invoice_nr);
-			}			
-		})
 
 		//DISPLAY BRANDS ON KEYUP
 		$('#brand').keyup(function(){

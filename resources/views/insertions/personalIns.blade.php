@@ -18,12 +18,55 @@
         </div>
         <div class="col-6 card-body">
             <h5 class="">Search on:</h5>
-                <input type="text" name="search_job_id" id="search_job_id" placeholder="Job ID">
-                <input type="text" name="search_company" id="search_company" placeholder="Company">
-                <input type="text" name="search_brand" id="search_brand" placeholder="Brand">
-                <input type="text" name="search_media" id="search_media" placeholder="Media">
-                <input type="text" name="search_issue_nr" id="search_issue_nr" placeholder="Issue Nr">
-                <input type="text" name="search_status" id="search_status" placeholder="Status">
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item">
+                    <input type="text" name="search_job_id" id="search_job_id" placeholder="Job ID">
+                </li>
+                <li class="list-group-item">
+                    <input type="text" name="search_company" id="search_company" placeholder="Company">
+                </li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+                <li class="list-group-item">
+                    <input type="text" name="search_brand" id="search_brand" placeholder="Brand">
+                </li>
+
+                <li class="list-group-item">
+                    <input type="text" name="search_status" id="search_status" placeholder="Status">
+                </li>
+            </ul>
+
+                @php
+                    $all_media = App\Models\Media::orderBy('name', 'asc')->get();
+                    $all_issue = App\Models\IssueNrs::orderBy('final_issue', 'asc')->get();          
+                @endphp
+                <ul class="list-group text-center" style="width: 445px;">
+                    @if (isset($all_media[0]))
+                    
+                        <li class="list-group-item">
+                            <select aria-label="Media select" id="search_media" name="search_media">
+                                <option selected disabled>Media</option>
+                                    @foreach ($all_media as $media)
+                                        <option value="{{$media->abbreviation}}">{{$media->name}}</option>
+                                    @endforeach
+                            </select>
+                        </li>   
+                    @else
+                        <p>No Media added</p>
+                    @endif
+              
+                    @if (isset($all_issue[0]))
+                    <li class="list-group-item" id="liDiv">
+                        <select aria-label="Issue select" id="search_issue_nr" name="search_issue_nr">
+                            <option selected disabled>Issue</option>
+                                @foreach ($all_issue as $issue)
+                                    <option value="{{$issue->final_issue}}">{{$issue->final_issue}}</option>
+                                @endforeach
+                        </select></li>   
+                    @else
+                        <p>No Issue added</p>
+                    @endif
+                </ul>
         </div>
     </div>
 </div>
@@ -46,8 +89,6 @@
             <th>Quantity</th>
             <th>Fare</th>
             <th>Invoiced</th>
-            <th>Invoice Nr</th>
-            <th>Year</th>
             <th>RCVD</th>
             <th>Status</th>
             <th width="100px">Action</th>
@@ -113,8 +154,6 @@
                 {data: 'quantity', name: 'quantity'},
                 {data: 'fare', name: 'fare'},
                 {data: 'invoiced', name: 'invoiced'},
-                {data: 'invoice_nr', name: 'invoice_nr'},
-                {data: 'year', name: 'year'},
                 {data: 'rcvd', name: 'rcvd'},
                 {data: 'invoice_status', name: 'status'},
                 {data: 'action', name: 'action', orderable: true, searchable: true},
@@ -153,13 +192,13 @@
                 $('#search_company').keyup(function(){
                     table.draw();
                 });
-                $('#search_job_id').keyup(function(){
+                $('#search_brand').keyup(function(){
                     table.draw();
                 });
-                $('#search_media').keyup(function(){
+                $('#search_media').change(function(){
                     table.draw();
                 });
-                $('#search_issue_nr').keyup(function(){
+                $('#search_issue_nr').change(function(){
                     table.draw();
                 });
                 $('#search_status').keyup(function(){
@@ -169,9 +208,43 @@
         });
     };
 
+    //SELECT ISSUE
+    function getIssue(){
+        let mediaInput = $('#search_media').val();
+        
+        $.ajax({
+            type: 'post',
+            url: '/ajax/issue/getSearch',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                media:mediaInput,
+            },
+            success: function (response) {
+                let issue = '<select aria-label="Default select example" name="search_issue_nr" id="search_issue_nr"><option selected disabled>Issue</option>' ;
+                
+                response.forEach(element => {
+                    issue += "<option value='"+element['id']+"'>"+element['final_issue']+"</option>";
+                });
+
+                issue += '</select>';
+
+                $('#liDiv').append(issue);
+            },
+            error: function (e){
+                console.log(e)
+            }
+        });
+    }
+
     $(document).ready(function(){
         datatable();
     });
+
+    $("#search_media").change(function(){
+        $('#search_issue_nr').remove();
+
+        getIssue();
+    })
 
   </script>
 @endsection

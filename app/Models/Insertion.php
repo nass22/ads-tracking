@@ -21,9 +21,7 @@ class Insertion extends Model
         'comment',
         'quantity',
         'fare',
-        'invoice_nr',
         'invoiced',
-        'year',
         'RCVD',
         'status',
     ];

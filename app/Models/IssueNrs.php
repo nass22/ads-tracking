@@ -18,6 +18,7 @@ class IssueNrs extends Model
         'month',
         'day',
         'week',
-        'final_issue'
+        'final_issue',
+        'deadline'
     ];
 }

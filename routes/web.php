@@ -27,8 +27,8 @@ use App\Http\Controllers\InvoiceStatusController;
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/my_insertions', [InsertionController::class, 'myInsertions'])->name('my_insertions');
+Route::get('/', [HomeController::class, 'index'])->middleware('auth')->name('home');
+Route::get('/my_insertions', [InsertionController::class, 'myInsertions'])->middleware('auth')->name('my_insertions');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
@@ -44,5 +44,6 @@ Route::group(['middleware' => ['auth']], function() {
 Route::get('/ajax/companies/index', [AjaxController::class, 'indexCompany'])->name('ajax.companies.index');
 Route::post('/ajax/companies/store', [AjaxController::class, 'storeCompany'])->name('ajax.companies.store');
 Route::post('/ajax/issue/get', [AjaxController::class, 'getIssue'])->name('ajax.issue.get');
+Route::post('/ajax/issue/getSearch', [AjaxController::class, 'getIssueSearch'])->name('ajax.issue.getSearch');
 Route::get('ajax/brand/get', [AjaxController::class, 'liveSearch'])->name('ajax.live.search');
 Route::get('ajax/issueExist/get', [AjaxController::class, 'issueExist'])->name('ajax.issueExist.get');

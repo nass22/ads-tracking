@@ -73,10 +73,6 @@ class HomeController extends Controller
                                     return true;
                                 } else if (Str::contains(Str::lower($row['invoiced']), Str::lower($request->get('search')))) {
                                     return true;
-                                } else if (Str::contains(Str::lower($row['invoice_nr']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['year']), Str::lower($request->get('search')))) {
-                                    return true;
                                 }
                                 return false;
                             });

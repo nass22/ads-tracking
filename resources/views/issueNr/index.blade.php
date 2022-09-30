@@ -20,6 +20,7 @@
             <th>No</th>
             <th>Media</th>
             <th>Issue Nr</th>
+            <th>Deadline</th>
             <th width="105px">Action</th>
         </tr>
 	    @foreach ($all_issue as $issue)
@@ -27,6 +28,7 @@
 	        <td>{{ $loop->index }}</td>
             <td>{{ $issue->media }}</td>
 	        <td>{{ $issue->final_issue }}</td>
+            <td>{{ $issue->deadline }}</td>
 	        <td>
                 <form action="{{ route('issue_nr.destroy',$issue->id) }}" method="POST">
 

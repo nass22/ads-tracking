@@ -37,6 +37,16 @@ class AjaxController extends Controller
         return $all_issue;
     }
 
+    public function getIssueSearch(Request $request){
+        $mediaAbbr = $request->media;
+        $media = Media::where('abbreviation', $mediaAbbr)->first();
+
+        $year = date("Y");
+        
+        $all_issue = IssueNrs::where('media_id', $media->id)->where('year', '>=', $year)->get();
+        return $all_issue;
+    }
+
     public function liveSearch(Request $request){
         if($request->ajax()){
             $brands = Brand::where('name', 'LIKE', '%'.$request->brand.'%')->get();

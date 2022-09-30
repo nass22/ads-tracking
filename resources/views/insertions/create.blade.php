@@ -174,13 +174,6 @@
 		        </div>
 		    </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12 mb-2">
-		        <div class="form-group">
-		            <strong>Year:</strong>
-		            <input type="text" name="year" id="year" class="form-control" placeholder="Year">
-		        </div>
-		    </div>
-
 		    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
 		            <button type="submit" class="btn btn-primary" id="add">Submit</button>
 		    </div>
@@ -218,6 +211,7 @@
         });
     }
 
+    //SELECT ISSUE
     function getIssue(){
         let mediaInput = $('#media').val();
         mediaInput = JSON.parse(mediaInput);
@@ -251,25 +245,7 @@
     //WHEN DOCUMENT IS READY
     
     $(document).ready(function(){
-        // DISPLAY ONLY MONTH IN INPUT MONTH
-        $("#month").datepicker({
-            format: "mm",
-            viewMode: "months", 
-            minViewMode: "months",
-            multidate: true,
-            multidateSeparator: "/",
-        });
-
-        // DISPLAY ONLY YEAR IN INPUT YEAR
-        $("#year").datepicker({
-            format: "yyyy",
-            viewMode: "years", 
-            minViewMode: "years",
-            autoclose:true 
-        });
-
         getCompany();
-        
     });
 
     // DISPLAY TYPE, PLACEMENT INPUTS & ISSUES
@@ -340,17 +316,7 @@
             })
         })
     });
-    // ADD INPUT INVOICE_NR
-    $('#invoiced').change(function (){
-        $('#invoice_nrDiv').remove();
-
-        let invoiced = $('#invoiced').val();
-        if (invoiced == 2){
-            let invoice_nr = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="invoice_nrDiv"><div class="form-group"><strong>Invoice Nr:</strong><input type="text" name="invoice_nr" id="invoice_nr" class="form-control" placeholder="Invoice Nr" required></div></div>'
-
-            $('#invoice_statusDiv').after(invoice_nr);
-        }
-    })
+    
 
     //DISPLAY BRANDS ON KEYUP
     $('#brand').keyup(function(){
@@ -379,51 +345,5 @@
             })
     })
 
-
-    
-
-    
-
-
-    // STORE 
-    // $(document).ready(function(){
-    //     $('#add').on('click', function(e){
-    //         let media = JSON.parse($('#selectMedia').val());
-    //         let mediaName = media.name;
-            
-    //         let company = JSON.parse($('#selectCompany').val());
-    //         let companyName = company.name;
-            
-    //         e.preventDefault();
-    //         $.ajax({
-    //             url: "/insertions",
-    //             type: 'post',
-    //             data: {
-    //                 "_token" : "{{ csrf_token() }}",
-    //                 user_id : $('#user_id').val(),
-    //                 job_id : $('#job_id').val(),
-    //                 company : companyName,
-    //                 brand : $('#brand').val(),
-    //                 comment : $('#comment').val(),
-    //                 media : mediaName,
-    //                 type : $('#type').val(),
-    //                 placement : $('#placement').val(),
-    //                 month : $('#month').val(),
-    //                 issue_nr : $('#issue_nr').val(),
-    //                 number_of_pages: $('#number_of_pages').val(),
-    //                 quantity : $('#quantity').val(),
-    //                 fare : $('#fare').val(),
-    //                 invoiced : $('#invoiced').val(),
-    //                 year : $('#year').val(),
-    //             },
-    //             success: function(result){
-    //                 console.log(result);
-    //             },
-    //             error: function(error){
-    //                 console.log(mediaName);
-    //             }
-    //         });
-    //     });
-    // });
     </script>
 @endsection

@@ -35,6 +35,7 @@ class IssueNrsController extends Controller
             'year' => 'nullable',
             'day' => 'nullable',
             'week' => 'nullable',
+            'deadline' => 'nullable'
         ]);
 
         $mediaInput = json_decode($request->media);
@@ -53,7 +54,8 @@ class IssueNrsController extends Controller
                 $issue->year = $request->year;
                 $issue->month = $request->month;
                 $issue->final_issue = $media_abbre . "-" . strtoupper($request->numero) . "_" .  substr($request->year, -2) . $request->month;
-    
+                $issue->deadline = $request->deadline;
+
                 $issue->save();
             } elseif ($mediaName == "Tempo Medical" || $mediaName == "BJP"){
                 $issue->user_id = $request->user_id;
@@ -63,6 +65,7 @@ class IssueNrsController extends Controller
                 $issue->year = $request->year;
                 $issue->month = $request->month;
                 $issue->final_issue = $media_abbre . $request->numero . "_" . substr($request->year, -2) . $request->month;
+                $issue->deadline = $request->deadline;
     
                 $issue->save();
             } elseif ($mediaName == "Tempo Today" || $mediaName == "Tempo Week-end" || $mediaName == "eMail"){
@@ -87,6 +90,7 @@ class IssueNrsController extends Controller
                 $issue->day = $dateParse['day'];
                 $issue->week = $week;
                 $issue->final_issue = $media_abbre . "_" . substr($dateParse['year'], -2) . $dateParse['month'] . $dateParse['day'] . "_" . $week;
+                $issue->deadline = $request->deadline;
     
                 $issue->save();
             } else {
@@ -96,6 +100,7 @@ class IssueNrsController extends Controller
                 $issue->year = $request->year;
                 $issue->month = $request->month;
                 $issue->final_issue = $media_abbre . "_" . substr($request->year, -2) . $request->month;
+                $issue->deadline = $request->deadline;
     
                 $issue->save();
             }
@@ -104,7 +109,7 @@ class IssueNrsController extends Controller
             
             return redirect()->route('issue_nr.index');
         } catch (\Throwable $th) {
-            Alert::error('Error', 'This Issue Nr already exists');
+            Alert::error('Error', 'This Issue already exists');
 
             return back()->withInput();
         }
@@ -122,6 +127,7 @@ class IssueNrsController extends Controller
             'year' => 'nullable',
             'day' => 'nullable',
             'week' => 'nullable',
+            'deadline' => 'nullable'
         ]);
 
         $media = json_decode($request->media);
@@ -140,6 +146,7 @@ class IssueNrsController extends Controller
                 $issue_nr->year = $request->year;
                 $issue_nr->month = $request->month;
                 $issue_nr->final_issue = $media_abbre . "-" . strtoupper($request->numero) . "_" .  substr($request->year, -2) . $request->month;
+                $issue_nr->deadline = $request->deadline;
     
                 $issue_nr->update();
             } elseif ($mediaName == "Tempo Medical" || $mediaName == "BJP"){
@@ -150,6 +157,7 @@ class IssueNrsController extends Controller
                 $issue_nr->year = $request->year;
                 $issue_nr->month = $request->month;
                 $issue_nr->final_issue = $media_abbre . $request->numero . "_" . substr($request->year, -2) . $request->month;
+                $issue_nr->deadline = $request->deadline;
     
                 $issue_nr->update();
             } elseif ($mediaName == "Tempo Today" || $mediaName == "Tempo Week-end" || $mediaName == "eMail"){
@@ -174,6 +182,7 @@ class IssueNrsController extends Controller
                 $issue_nr->day = $dateParse['day'];
                 $issue_nr->week = $week;
                 $issue_nr->final_issue = $media_abbre . "_" . substr($dateParse['year'], -2) . $dateParse['month'] . $dateParse['day'] . "_" . $week;
+                $issue_nr->deadline = $request->deadline;
     
                 $issue_nr->update();
             } else {
@@ -183,6 +192,7 @@ class IssueNrsController extends Controller
                 $issue_nr->year = $request->year;
                 $issue_nr->month = $request->month;
                 $issue_nr->final_issue = $media_abbre . "_" . substr($request->year, -2) . $request->month;
+                $issue_nr->deadline = $request->deadline;
     
                 $issue_nr->update();
             }

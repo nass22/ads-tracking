@@ -77,6 +77,14 @@
                     </div>
                 </div>
             @endif
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="deadlineDiv">
+                <div class="form-group">
+                    <strong>Deadline:</strong>
+                    <input type="text" name="deadline" id="deadline" class="form-control" placeholder="Deadline" value="{{$issue_nr->deadline}}">
+                </div>
+            </div>
+
 
 
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -94,193 +102,233 @@
     <script>
             $('#media').change(function(){
             
-            $('#numeroDiv').remove();
-            $('#yearDiv').remove();
-            $('#monthDiv').remove();
-            $("#weekDiv").remove();
+                $('#numeroDiv').remove();
+                $('#yearDiv').remove();
+                $('#monthDiv').remove();
+                $("#weekDiv").remove();
+                $('#deadlineDiv').remove();
 
-            let media = $('#media').val();
-            media = JSON.parse(media);
-            
-            
-
-            if (media.name == "Tempo Medical" || media.name == "BJP"){
-                let numeroInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="numeroDiv"><div class="form-group"><strong>Numero:</strong><input type="text" name="numero" id="numero" class="form-control" placeholder="Numero"></div></div>'
-
-                let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
-
-                let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
-
-
-                $('#divMedia').after(numeroInput);
-                $('#numeroDiv').after(yearInput);
-                $('#yearDiv').after(monthInput);
-
-                // DISPLAY ONLY MONTH IN INPUT MONTH
-                $("#month").datepicker({
-                    format: "mm",
-                    viewMode: "months", 
-                    minViewMode: "months",
-                    multidate: true,
-                    multidateSeparator: "/",
-                });
-
-                // DISPLAY ONLY YEAR IN INPUT YEAR
-                $("#year").datepicker({
-                    format: "yyyy",
-                    viewMode: "years", 
-                    minViewMode: "years",
-                    autoclose:true 
-                });
-
-            } else if (media.name == "Tempo Focus"){
-                let numero = media.numero;
-                numero = numero.split(",");
-
-                let numeroInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="numeroDiv"><div class="form-group"><strong>Numero:</strong><select class="form-select" aria-label="Default select example" name="numero" id="numero"><option selected disabled>Select numero</option>';
-
-                numero.forEach(element => {
-                    numeroInput += "<option value='"+element.trim()+"'>"+element.trim()+"</option>";
-                });
-
-                numeroInput += '</select></div></div>'
-
-                let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
-
-                let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
-
-                $('#divMedia').after(numeroInput);
-                $('#numeroDiv').after(yearInput);
-                $('#yearDiv').after(monthInput);
-
-                // DISPLAY ONLY MONTH IN INPUT MONTH
-                $("#month").datepicker({
-                    format: "mm",
-                    viewMode: "months", 
-                    minViewMode: "months",
-                    multidate: true,
-                    multidateSeparator: "/",
-                });
-
-                // DISPLAY ONLY YEAR IN INPUT YEAR
-                $("#year").datepicker({
-                    format: "yyyy",
-                    viewMode: "years", 
-                    minViewMode: "years",
-                    autoclose:true 
-                });
-            } else if (media.name == "Tempo Congress"){
-                let numero = media.numero;
-                numero = numero.split(",");
-
-                let numeroInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="numeroDiv"><div class="form-group"><strong>Numero:</strong><select class="form-select" aria-label="Default select example" name="numero" id="numero"><option selected disabled>Select numero</option>';
-
-                numero.forEach(element => {
-                    numeroInput += "<option value='"+element.trim()+"'>"+element.trim()+"</option>";
-                });
-
-                numeroInput += '</select></div></div>'
-
-                let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
-
-                let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
-
-                $('#divMedia').after(numeroInput);
-                $('#numeroDiv').after(yearInput);
-                $('#yearDiv').after(monthInput);
-
-                // DISPLAY ONLY MONTH IN INPUT MONTH
-                $("#month").datepicker({
-                    format: "mm",
-                    viewMode: "months", 
-                    minViewMode: "months",
-                    multidate: true,
-                    multidateSeparator: "/",
-                });
-
-                // DISPLAY ONLY YEAR IN INPUT YEAR
-                $("#year").datepicker({
-                    format: "yyyy",
-                    viewMode: "years", 
-                    minViewMode: "years",
-                    autoclose:true 
-                });
-            } else if (media.name == "Tempo Today" || media.name == "Tempo Week-end" || media.name == "eMail"){
-
-                let weekInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="weekDiv"><div class="form-group"><strong>Week:</strong><input type="text" name="week" id="week" class="form-control" placeholder="Week"></div></div>';
-
-                $('#divMedia').after(weekInput);
+                let media = $('#media').val();
+                media = JSON.parse(media);
                 
-                // DISPLAY ONLY MONTH IN INPUT MONTH
-                $("#month").datepicker({
-                    format: "mm",
-                    viewMode: "months", 
-                    minViewMode: "months",
-                    multidate: true,
-                    multidateSeparator: "/",
-                });
+                
+                if (media.name == "Tempo Medical" || media.name == "BJP"){
+                    let numeroInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="numeroDiv"><div class="form-group"><strong>Numero:</strong><input type="text" name="numero" id="numero" class="form-control" placeholder="Numero"></div></div>'
 
-                // DISPLAY ONLY YEAR IN INPUT YEAR
-                $("#year").datepicker({
-                    format: "yyyy",
-                    viewMode: "years", 
-                    minViewMode: "years",
-                    autoclose:true 
-                });
+                    let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
 
-                // DISPLAY WEEK
-                $("#week").datepicker({
-                    calendarWeeks: true,
-                    weekStart: 1,
-                    autoclose:true,
-                    daysOfWeekDisabled: "0,2,3,4,5,6",
-                });
-            } else {
-                let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
+                    let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
 
-                let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
+                    let deadlineInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="deadlineDiv"><div class="form-group"><strong>Deadline:</strong><input type="text" name="deadline" id="deadline" class="form-control" placeholder="Deadline"></div></div>';
+
+                    $('#divMedia').after(numeroInput);
+                    $('#numeroDiv').after(yearInput);
+                    $('#yearDiv').after(monthInput);
+                    $('#monthDiv').after(deadlineInput);
+
+                    // DISPLAY ONLY MONTH IN INPUT MONTH
+                    $("#month").datepicker({
+                        format: "mm",
+                        viewMode: "months", 
+                        minViewMode: "months",
+                        multidate: true,
+                        multidateSeparator: "/",
+                    });
+
+                    // DISPLAY ONLY YEAR IN INPUT YEAR
+                    $("#year").datepicker({
+                        format: "yyyy",
+                        viewMode: "years", 
+                        minViewMode: "years",
+                        autoclose:true 
+                    });
+
+                    //DISPLAY CALENDAR FOR DEADLINE
+                    $("#deadline").datepicker({
+                        format: "dd/mm/yyyy",
+                        multidateSeparator: "/",
+                        weekStart: 1,
+                    });
+
+                } else if (media.name == "Tempo Focus"){
+                    let numero = media.numero;
+                    numero = numero.split(",");
+
+                    let numeroInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="numeroDiv"><div class="form-group"><strong>Numero:</strong><select class="form-select" aria-label="Default select example" name="numero" id="numero"><option selected disabled>Select numero</option>';
+
+                    numero.forEach(element => {
+                        numeroInput += "<option value='"+element.trim()+"'>"+element.trim()+"</option>";
+                    });
+
+                    numeroInput += '</select></div></div>'
+
+                    let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
+
+                    let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
+
+                    let deadlineInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="deadlineDiv"><div class="form-group"><strong>Deadline:</strong><input type="text" name="deadline" id="deadline" class="form-control" placeholder="Deadline"></div></div>';
+
+                    $('#divMedia').after(numeroInput);
+                    $('#numeroDiv').after(yearInput);
+                    $('#yearDiv').after(monthInput);
+                    $('#monthDiv').after(deadlineInput);
+
+                    // DISPLAY ONLY MONTH IN INPUT MONTH
+                    $("#month").datepicker({
+                        format: "mm",
+                        viewMode: "months", 
+                        minViewMode: "months",
+                        multidate: true,
+                        multidateSeparator: "/",
+                    });
+
+                    // DISPLAY ONLY YEAR IN INPUT YEAR
+                    $("#year").datepicker({
+                        format: "yyyy",
+                        viewMode: "years", 
+                        minViewMode: "years",
+                        autoclose:true
+                    });
+
+                    //DISPLAY CALENDAR FOR DEADLINE
+                    $("#deadline").datepicker({
+                        format: "dd/mm/yyyy",
+                        multidateSeparator: "/",
+                        weekStart: 1,
+                    });
+                } else if (media.name == "Tempo Congress"){
+                    let numero = media.numero;
+                    numero = numero.split(",");
+
+                    let numeroInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="numeroDiv"><div class="form-group"><strong>Numero:</strong><select class="form-select" aria-label="Default select example" name="numero" id="numero"><option selected disabled>Select numero</option>';
+
+                    numero.forEach(element => {
+                        numeroInput += "<option value='"+element.trim()+"'>"+element.trim()+"</option>";
+                    });
+
+                    numeroInput += '</select></div></div>'
+
+                    let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
+
+                    let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
+
+                    let deadlineInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="deadlineDiv"><div class="form-group"><strong>Deadline:</strong><input type="text" name="deadline" id="deadline" class="form-control" placeholder="Deadline"></div></div>';
+
+                    $('#divMedia').after(numeroInput);
+                    $('#numeroDiv').after(yearInput);
+                    $('#yearDiv').after(monthInput);
+                    $('#monthDiv').after(deadlineInput);
+
+                    // DISPLAY ONLY MONTH IN INPUT MONTH
+                    $("#month").datepicker({
+                        format: "mm",
+                        viewMode: "months", 
+                        minViewMode: "months",
+                        multidate: true,
+                        multidateSeparator: "/",
+                    });
+
+                    // DISPLAY ONLY YEAR IN INPUT YEAR
+                    $("#year").datepicker({
+                        format: "yyyy",
+                        viewMode: "years", 
+                        minViewMode: "years",
+                        autoclose:true 
+                    });
+
+                    //DISPLAY CALENDAR FOR DEADLINE
+                    $("#deadline").datepicker({
+                        format: "dd/mm/yyyy",
+                        multidateSeparator: "/",
+                        weekStart: 1,
+                    });
+                } else if (media.name == "Tempo Today" || media.name == "Tempo Week-end" || media.name == "eMail"){
+
+                    let weekInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="weekDiv"><div class="form-group"><strong>Week:</strong><input type="text" name="week" id="week" class="form-control" placeholder="Week"></div></div>';
+
+                    let deadlineInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="deadlineDiv"><div class="form-group"><strong>Deadline:</strong><input type="text" name="deadline" id="deadline" class="form-control" placeholder="Deadline"></div></div>';
+
+                    $('#divMedia').after(weekInput);
+                    $('#weekDiv').after(deadlineInput);
+                    
+                    // DISPLAY ONLY MONTH IN INPUT MONTH
+                    $("#month").datepicker({
+                        format: "mm",
+                        viewMode: "months", 
+                        minViewMode: "months",
+                        multidate: true,
+                        multidateSeparator: "/",
+                    });
+
+                    // DISPLAY ONLY YEAR IN INPUT YEAR
+                    $("#year").datepicker({
+                        format: "yyyy",
+                        viewMode: "years", 
+                        minViewMode: "years",
+                        autoclose:true 
+                    });
+
+                    // DISPLAY WEEK
+                    $("#week").datepicker({
+                        calendarWeeks: true,
+                        weekStart: 1,
+                        autoclose:true,
+                        daysOfWeekDisabled: "0,2,3,4,5,6",
+                    });
+
+                    //DISPLAY CALENDAR FOR DEADLINE
+                    $("#deadline").datepicker({
+                        format: "dd/mm/yyyy",
+                        multidateSeparator: "/",
+                        weekStart: 1,
+                    });
+                } else {
+                    let yearInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="yearDiv"><div class="form-group"><strong>Year:</strong><input type="text" name="year" id="year" class="form-control" placeholder="Year"></div></div>';
+
+                    let monthInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="monthDiv"><div class="form-group"><strong>Month:</strong><input type="text" name="month" id="month" class="form-control" placeholder="Month"></div></div>';
+
+                    let deadlineInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="deadlineDiv"><div class="form-group"><strong>Deadline:</strong><input type="text" name="deadline" id="deadline" class="form-control" placeholder="Deadline"></div></div>';
 
 
-                $('#divMedia').after(yearInput);
-                $('#yearDiv').after(monthInput);
+                    $('#divMedia').after(yearInput);
+                    $('#yearDiv').after(monthInput);
+                    $('#monthDiv').after(deadlineInput);
 
-                // DISPLAY ONLY MONTH IN INPUT MONTH
-                $("#month").datepicker({
-                    format: "mm",
-                    viewMode: "months", 
-                    minViewMode: "months",
-                    multidate: true,
-                    multidateSeparator: "/",
-                });
+                    // DISPLAY ONLY MONTH IN INPUT MONTH
+                    $("#month").datepicker({
+                        format: "mm",
+                        viewMode: "months", 
+                        minViewMode: "months",
+                        multidate: true,
+                        multidateSeparator: "/",
+                    });
 
-                // DISPLAY ONLY YEAR IN INPUT YEAR
-                $("#year").datepicker({
-                    format: "yyyy",
-                    viewMode: "years", 
-                    minViewMode: "years",
-                    autoclose:true 
-                });
+                    // DISPLAY ONLY YEAR IN INPUT YEAR
+                    $("#year").datepicker({
+                        format: "yyyy",
+                        viewMode: "years", 
+                        minViewMode: "years",
+                        autoclose:true 
+                    });
+
+                    //DISPLAY CALENDAR FOR DEADLINE
+                    $("#deadline").datepicker({
+                        format: "dd/mm/yyyy",
+                        multidateSeparator: "/",
+                        weekStart: 1,
+                    });
             }
         });
 
 
 
-        // $(document).ready(function(){
-        //     // DISPLAY ONLY MONTH IN INPUT MONTH
-		// 	$("#month").datepicker({
-        //     format: "mm",
-        //     viewMode: "months", 
-        //     minViewMode: "months",
-        //     multidate: true
-        // 	});
-
-		// 	// DISPLAY ONLY YEAR IN CALENDAR
-        //     $("#year").datepicker({
-        //         format: "yyyy",
-        //         viewMode: "years", 
-        //         minViewMode: "years",
-        //         ultidate: true
-        //     });
-        // })
+        $(document).ready(function(){
+            //DISPLAY CALENDAR FOR DEADLINE
+            $("#deadline").datepicker({
+                    format: "dd/mm/yyyy",
+                    multidateSeparator: "/",
+                    weekStart: 1,
+            });
+        })
     </script>
 @endsection

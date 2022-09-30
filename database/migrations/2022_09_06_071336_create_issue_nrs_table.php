@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('day')->nullable();
             $table->string('week')->nullable();
             $table->string('final_issue')->unique();
+            $table->string('deadline')->nullable();
             $table->timestamps();
         });
     }
