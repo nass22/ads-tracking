@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('insertions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade');
-            $table->string('invoice_status');
             $table->string('job_id');
             $table->foreignId('company')->constrained('companies')->onUpdate('cascade');
             $table->foreignId('issue_nr')->constrained('issue_nrs')->onUpdate('cascade');
@@ -29,6 +28,7 @@ return new class extends Migration
             $table->float('fare', 10, 2);
             $table->foreignId('invoiced')->constrained('invoice_statuses')->onUpdate('cascade');
             $table->string('rcvd')->default('NO');
+            $table->string('invoice_status');
             $table->timestamps();
         });
     }

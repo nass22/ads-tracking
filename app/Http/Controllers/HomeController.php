@@ -73,6 +73,10 @@ class HomeController extends Controller
                                     return true;
                                 } else if (Str::contains(Str::lower($row['invoiced']), Str::lower($request->get('search')))) {
                                     return true;
+                                } else if (Str::contains(Str::lower($row['deadline']), Str::lower($request->get('search')))) {
+                                    return true;
+                                } else if (Str::contains(Str::lower($row['rcvd']), Str::lower($request->get('search')))) {
+                                    return true;
                                 }
                                 return false;
                             });
@@ -171,6 +175,15 @@ class HomeController extends Controller
                         $invoice_name = $invoice_status->name;
                         
                         return $invoice_name;
+                    })
+                    ->addColumn('deadline', function($row){
+                        $insertion = Insertion::where('id', $row->id)->first();
+                        $issue_id = $insertion->issue_nr;
+
+                        $issue = IssueNrs::where('id', $issue_id)->first();
+                        $issue_deadline = $issue->deadline;
+                        
+                        return $issue_deadline;
                     })
                     ->addColumn('action', function($row){
                         $siteEdit= route('insertions.edit',$row->id);

@@ -36,11 +36,6 @@
                     <b>Received?</b> 
                 </label>
             </div>
-
-            <div class="card-body">
-                <strong>Deadline:</strong>
-		            <input type="text" name="deadline" id="deadline" class="form-control">
-            </div>
         </div>
         @endif
 

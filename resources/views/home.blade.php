@@ -93,6 +93,7 @@
             <th>Quantity</th>
             <th>Fare</th>
             <th>Invoiced</th>
+            <th>Deadline</th>
             <th>RCVD</th>
             <th>Status</th>
             <th width="100px">Action</th>
@@ -159,6 +160,7 @@
                 {data: 'quantity', name: 'quantity'},
                 {data: 'fare', name: 'fare'},
                 {data: 'invoiced', name: 'invoiced'},
+                {data: 'deadline', name: 'deadline'},
                 {data: 'rcvd', name: 'rcvd'},
                 {data: 'invoice_status', name: 'invoice_status'},
                 {data: 'action', name: 'action', orderable: true, searchable: true},
@@ -228,7 +230,7 @@
                 let issue = '<select aria-label="Default select example" name="search_issue_nr" id="search_issue_nr"><option selected disabled>Select issue</option>' ;
                 
                 response.forEach(element => {
-                    issue += "<option value='"+element['id']+"'>"+element['final_issue']+"</option>";
+                    issue += "<option value='"+element['final_issue']+"'>"+element['final_issue']+"</option>";
                 });
 
                 issue += '</select>';
