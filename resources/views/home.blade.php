@@ -6,7 +6,15 @@
     <a href="{{ route('insertions.create') }}" class="btn btn-warning"><i class="fa-solid fa-circle-plus"></i> <strong>Add New Insertion</strong></a>
 </div>
 
-<div class="container card mt-4">
+@if(session()->has('success'))
+    <div class="alert alert-success">
+        {{ session()->get('success') }}
+    </div>
+@endif
+
+
+<div class="container card mt-4 ">
+    
     <div class="row">
         <div class="col-6 card-body">
             <div class="form-check">
@@ -68,7 +76,6 @@
                         <p>No Issue added</p>
                     @endif
                 </ul>
-           
         </div>
     </div>
 

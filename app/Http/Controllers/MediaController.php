@@ -71,9 +71,10 @@ class MediaController extends Controller
             $media->numero = implode(",", $newArrayNumero);
             $media->save();
         
-            Alert::success('Success', 'Media successfully created.');
+            // Alert::success('Success', 'Media successfully created.');
+            // return redirect()->route('medias.index');
+            return redirect()->route('medias.index')->with('success', 'Media successfully created.');
 
-            return redirect()->route('medias.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -125,9 +126,10 @@ class MediaController extends Controller
             $media->numero = implode(",", $newArrayNumero);
             $media->update();
             
-            Alert::success('Success', 'Media successfully updated.');
+            // Alert::success('Success', 'Media successfully updated.');
+            // return redirect()->route('medias.index');
+            return redirect()->route('medias.index')->with('success', 'Media successfully updated.');
 
-            return redirect()->route('medias.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -140,9 +142,10 @@ class MediaController extends Controller
     {
         try {
             $media->delete();
-            Alert::success('Success', 'Media successfully deleted.');
-            
-            return redirect()->route('medias.index');
+            // Alert::success('Success', 'Media successfully deleted.');
+            // return redirect()->route('medias.index');
+            return redirect()->route('medias.index')->with('success', 'Media successfully deleted.');
+
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 

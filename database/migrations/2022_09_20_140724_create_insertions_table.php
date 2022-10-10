@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('placement')->nullable();
             $table->string('brand')->nullable();
             $table->text('comment')->nullable();
-            $table->string('quantity');
+            $table->string('quantity')->nullable();
             $table->float('fare', 10, 2);
             $table->foreignId('invoiced')->constrained('invoice_statuses')->onUpdate('cascade');
             $table->string('rcvd')->default('NO');

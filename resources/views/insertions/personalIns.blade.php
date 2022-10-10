@@ -71,9 +71,9 @@
     </div>
 </div>
 
-<table cellpadding="3" cellspacing="0" border="0" style="width: 67%; margin: 0 auto 2em auto;" class="mt-4">
+<table border="0" style="width: 67%; margin: 0 auto 2em auto;" class="mt-4">
     <div id="buttons"></div>
-<table class="table table-bordered data-table" id="insertionsPersoTable">
+<table class="table table-bordered data-table stripe compact" id="insertionsPersoTable">
     <thead>
         <tr>
             <th>ID</th>

@@ -35,86 +35,6 @@ class InsertionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        if ($request->ajax()) {
-            
-            if ($request->get('check') == "false") {
-                $data = Insertion::where('invoice_status', 'open')->orderBy('id', 'desc')->get();
-            } else {
-                $data = Insertion::orderBy('id', 'desc')->get();
-            }
-            
-            return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->filter(function ($instance) use ($request) {
-                        if (!empty($request->get('search'))) {
-                            
-                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                                
-                                if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['author']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['job_id']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['company']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['brand']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['comment']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['media']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['type']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['placement']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['issue_nr']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['quantity']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['fare']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['invoiced']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['invoice_nr']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['year']), Str::lower($request->get('search')))) {
-                                    return true;
-                                } else if (Str::contains(Str::lower($row['status']), Str::lower($request->get('search')))) {
-                                    return true;
-                                }
-                                return false;
-                            });
-                        }
-                    })
-                    ->addColumn('action', function($row){
-                        $siteEdit= route('insertions.edit',$row->id);
-                        $siteDelete = route('insertions.destroy', $row->id);
-                       
-                        $btn = '
-                        <a href="'. $siteEdit .'" class="edit btn btn-primary btn-sm" target="_blank">Edit</a>
-                        <form action="' . $siteDelete. '" method="POST">
-                        '.csrf_field().'
-                        '.method_field("DELETE").'
-                        <button type="submit" class="btn btn-danger delete-confirm">Delete</button>
-                        </form>';
-
-                        
-
-                        $insertion = Insertion::where('id', $row->id)->first();
-
-                        if($insertion->user_id == Auth::user()->id || Str::lower(Auth::user()->role) == "admin"){
-                            return $btn;
-                        }
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
-        }
-        
-        return view('home');
-    }
     
     /**
      * Show the form for creating a new resource.
@@ -143,7 +63,7 @@ class InsertionController extends Controller
             'placement' => 'nullable',
             'brand' => 'nullable',
             'comment' => 'nullable',
-            'quantity' => 'required|integer',
+            'quantity' => 'nullable',
             'fare' => 'required',
             'invoiced' => 'nullable',
             'rcvd' => 'nullable',
@@ -192,9 +112,9 @@ class InsertionController extends Controller
             
             $insertion->save();
 
-            Alert::success('Success','Insertion successfully created.');
+            // Alert::toast('Insertion successfully created.', 'success');
 
-            return redirect()->route('insertions.index');
+            return redirect()->route('home')->with('success', 'Insertion successfully created.');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -243,7 +163,7 @@ class InsertionController extends Controller
             'placement' => 'nullable',
             'brand' => 'nullable',
             'comment' => 'nullable',
-            'quantity' => 'required|integer',
+            'quantity' => 'nullable',
             'fare' => 'required',
             'invoiced' => 'nullable',
             'rcvd' => 'nullable',
@@ -290,9 +210,9 @@ class InsertionController extends Controller
 
             $insertion->update();
 
-            Alert::success('Success','Insertion successfully updated.');
+            // Alert::toast('Insertion successfully updated.', 'success');
 
-            return redirect()->route('insertions.index');
+            return redirect()->route('home')->with('success', 'Insertion successfully updated.');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -312,9 +232,9 @@ class InsertionController extends Controller
         try {
             $insertion->delete();
             
-            Alert::success('Success','Insertion successfully deleted.');
+            // Alert::toast('Insertion successfully deleted.', 'success');
 
-            return redirect()->route('insertions.index');
+            return redirect()->back()->with('success', 'Insertion successfully deleted.');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -322,6 +242,9 @@ class InsertionController extends Controller
         }
     }
 
+
+
+    
     public function myInsertions(Request $request){
         $user_id = Auth::user()->id;
         
@@ -486,7 +409,26 @@ class InsertionController extends Controller
                         '.csrf_field().'
                         '.method_field("DELETE").'
                         <button type="submit" class="btn btn-danger delete-confirm mt-2"><i class="fa-solid fa-trash"></i></button>
-                        </form>';
+                        </form>
+                        <script>
+                        $(".delete-confirm").on("click", function (event) {
+                            var form =  $(this).closest("form");
+                            event.preventDefault();
+                            new swal({
+                                title: "Are you sure?",
+                                text: "This record and it`s details will be permanantly deleted!",
+                                icon: "warning",
+                                buttons: true,
+                                showCancelButton: true,
+                                showConfirmButton: true,
+                            }).then(function(value) {
+                                if (value) {
+                                    form.submit();
+                                }
+                            });
+                        });
+                        </script>
+                        ';
 
                         $insertion = Insertion::where('id', $row->id)->first();
 

@@ -25,7 +25,9 @@ use App\Http\Controllers\InvoiceStatusController;
 |
 */
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+]);
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth')->name('home');
 Route::get('/my_insertions', [InsertionController::class, 'myInsertions'])->middleware('auth')->name('my_insertions');

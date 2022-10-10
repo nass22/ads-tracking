@@ -323,6 +323,23 @@
 
 
         $(document).ready(function(){
+            // DISPLAY ONLY MONTH IN INPUT MONTH
+            $("#month").datepicker({
+                format: "mm",
+                viewMode: "months", 
+                minViewMode: "months",
+                multidate: true,
+                multidateSeparator: "/",
+            });
+
+            // DISPLAY ONLY YEAR IN INPUT YEAR
+            $("#year").datepicker({
+                format: "yyyy",
+                viewMode: "years", 
+                minViewMode: "years",
+                autoclose:true 
+            });
+
             //DISPLAY CALENDAR FOR DEADLINE
             $("#deadline").datepicker({
                     format: "dd/mm/yyyy",

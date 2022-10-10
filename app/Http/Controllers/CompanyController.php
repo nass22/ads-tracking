@@ -43,9 +43,10 @@ class CompanyController extends Controller
                 'name' => $request->name,
                 'abbreviation' => Str::upper($request->abbreviation)
             ]);
-            Alert::success('Success','Company successfully created.');
 
-            return redirect()->route('companies.index');
+            // Alert::success('Success','Company successfully created.');
+            // return redirect()->route('companies.index');
+            return redirect()->route('companies.index')->with('success', 'Company successfully created.');
 
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
@@ -72,9 +73,10 @@ class CompanyController extends Controller
             $company->abbreviation = Str::upper($request->abbreviation);
             $company->update();
 
-            Alert::success('Success','Company successfully updated.');
-
-            return redirect()->route('companies.index');
+            // Alert::success('Success','Company successfully updated.');
+            // return redirect()->route('companies.index');
+            return redirect()->route('companies.index')->with('success', 'Company successfully updated.');
+            
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -87,9 +89,11 @@ class CompanyController extends Controller
     {
         try {
             $company->delete();
-            Alert::success('Success','Company successfully deleted.');
 
-            return redirect()->route('companies.index');
+            // Alert::success('Success','Company successfully deleted.');
+            // return redirect()->route('companies.index');
+            return redirect()->route('companies.index')->with('success', 'Company successfully deleted.');
+
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 

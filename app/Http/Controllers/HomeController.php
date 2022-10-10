@@ -195,7 +195,27 @@ class HomeController extends Controller
                         '.csrf_field().'
                         '.method_field("DELETE").'
                         <button type="submit" class="btn btn-danger delete-confirm mt-2"><i class="fa-solid fa-trash"></i></button>
-                        </form>';
+                        </form>
+                        <script>
+                        $(".delete-confirm").on("click", function (event) {
+                            var form =  $(this).closest("form");
+                            event.preventDefault();
+                            new swal({
+                                title: "Are you sure?",
+                                text: "This record and it`s details will be permanantly deleted!",
+                                icon: "warning",
+                                buttons: {
+                                    cancel: true,
+                                    confirm: true,
+                                  },
+                            }).then(function(value) {
+                                if (value) {
+                                    form.submit();
+                                }
+                            });
+                        });
+                        </script>
+                        ';
 
                         $insertion = Insertion::where('id', $row->id)->first();
 

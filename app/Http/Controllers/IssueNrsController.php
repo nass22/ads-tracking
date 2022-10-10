@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
 use DateTime;
 use App\Models\Media;
 use App\Models\IssueNrs;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -19,14 +21,86 @@ class IssueNrsController extends Controller
          $this->middleware('permission:issue_nrs-export', ['only' => ['export']]);
     }
 
-    public function index(){
-        $all_issue = IssueNrs::latest()->simplePaginate(10);
-        return view('issueNr.index', compact('all_issue'));
+    public function index(Request $request){
+        // $all_issue = IssueNrs::latest()->simplePaginate(10);
+        // return view('issueNr.index', compact('all_issue'));
+
+        if ($request->ajax()) {
+            $data = IssueNrs::orderBy('media', 'asc')->get();
+            
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->filter(function ($instance) use ($request) {
+                        
+                        if (!empty($request->get('search'))) {
+                            
+                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                                
+                                if (Str::contains(Str::lower($row['id']), Str::lower($request->get('search')))) {
+                                    return true;
+                                } else if (Str::contains(Str::lower($row['media']), Str::lower($request->get('search')))) {
+                                    return true;
+                                } else if (Str::contains(Str::lower($row['final_issue']), Str::lower($request->get('search')))) {
+                                    return true;
+                                } else if (Str::contains(Str::lower($row['deadline']), Str::lower($request->get('search')))) {
+                                    return true;
+                                } 
+                                return false;
+                            });
+                        }
+                        if (!empty($request->get('search_issue_nr'))) {
+                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                                if (Str::contains(Str::lower($row['final_issue']), Str::lower($request->get('search_issue_nr')))){
+                                    return true;
+                                }
+                                return false;
+                            });
+                        }
+                    })
+                    ->addColumn('action', function($row){
+                        $siteEdit= route('issue_nr.edit',$row->id);
+                        $siteDelete = route('issue_nr.destroy', $row->id);
+                       
+                        $btn = '
+                        <a href="'. $siteEdit .'" class="btn btn-primary edit" target="_blank"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <form action="' . $siteDelete. '" method="POST">
+                        '.csrf_field().'
+                        '.method_field("DELETE").'
+                        <button type="submit" class="btn btn-danger delete-confirm mt-2"><i class="fa-solid fa-trash"></i></button>
+                        </form>
+                        <script>
+                        $(".delete-confirm").on("click", function (event) {
+                            var form =  $(this).closest("form");
+                            event.preventDefault();
+                            new swal({
+                                title: "Are you sure?",
+                                text: "This record and it`s details will be permanantly deleted!",
+                                icon: "warning",
+                                buttons: {
+                                    cancel: true,
+                                    confirm: true,
+                                  },
+                            }).then(function(value) {
+                                if (value) {
+                                    form.submit();
+                                }
+                            });
+                        });
+                        </script>
+                        ';
+
+                       return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('issueNr.index');
     }
 
     public function create(){
         return view('issueNr.create');
     }
+    
     public function store(Request $request, IssueNrs $issue){
         request()->validate([
             'media' => 'required',
@@ -105,11 +179,12 @@ class IssueNrsController extends Controller
                 $issue->save();
             }
 
-            Alert::success('Success', 'Issue Nr successfully created');
-            
-            return redirect()->route('issue_nr.index');
+            // Alert::success('Success', 'Issue Nr successfully created');
+            // return redirect()->route('issue_nr.index');
+
+            return redirect()->route('issue_nr.index')->with('success', 'Issue successfully created.');
         } catch (\Throwable $th) {
-            Alert::error('Error', 'This Issue already exists');
+            Alert::error('Error', $th->getMessage());
 
             return back()->withInput();
         }
@@ -197,8 +272,10 @@ class IssueNrsController extends Controller
                 $issue_nr->update();
             }
             
-            Alert::success('Success', 'Issue Nr successfully updated');
-            return redirect()->route('issue_nr.index');
+            // Alert::success('Success', 'Issue Nr successfully updated');
+            // return redirect()->route('issue_nr.index');
+
+            return redirect()->route('issue_nr.index')->with('success', 'Issue successfully updated.');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -210,9 +287,11 @@ class IssueNrsController extends Controller
     {
         try {
             $issue_nr->delete();
-            Alert::success('success','Issue Nr successfully deleted');
+            // Alert::success('success','Issue Nr successfully deleted');
     
-            return redirect()->route('issue_nr.index');
+            // return redirect()->route('issue_nr.index');
+
+            return redirect()->route('issue_nr.index')->with('success', 'Issue successfully deleted.');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 

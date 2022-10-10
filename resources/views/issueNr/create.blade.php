@@ -65,7 +65,7 @@
             <tr>
                 <th>ID</th>
                 <th>Media</th>
-                <th>Issue</th>
+                <th>Issue Nr</th>
             </tr>
         </thead>
         <tbody>
@@ -167,6 +167,7 @@
             } else if (media.name == "Tempo Focus"){
                 let numero = media.numero;
                 numero = numero.split(",");
+                numero = numero.sort();
 
                 let numeroInput = '<div class="col-xs-12 col-sm-12 col-md-12 mb-2" id="numeroDiv"><div class="form-group"><strong>Numero:</strong><select class="form-select" aria-label="Default select example" name="numero" id="numero"><option selected disabled>Select numero</option>';
 

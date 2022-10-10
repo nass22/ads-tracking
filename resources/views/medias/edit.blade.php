@@ -61,6 +61,13 @@
             </div>
         </div>
 
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="form-group">
+                <strong>Numero:</strong>
+                <input type="text" name="numero" value="{{ $media->numero }}" class="form-control" placeholder="Media placement">
+            </div>
+        </div>
+
         <div class="col-xs-12 col-sm-12 col-md-12 text-center mt-3">
             <button type="submit" class="btn btn-primary" id='add'>Submit</button>
         </div>

@@ -39,7 +39,7 @@
     <!-- Styles -->
 
     {{-- BOOTSTRAP --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     {{-- DATEPICKER --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     {{-- JQUERY DATATABLES --}}
@@ -73,13 +73,13 @@
 
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('home')}}">Home</a>
+                            <a class="nav-link {{ Route::current()->getName() == 'home' ? 'active' : '' }}" href="{{route('home')}}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('my_insertions')}}">My insertions</a>
+                            <a class="nav-link {{ Route::current()->getName() == 'my_insertions' ? 'active' : '' }}" href="{{route('my_insertions')}}">My insertions</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle {{ (Route::current()->getName() != 'home') && (Route::current()->getName() != 'my_insertions' ? 'active' : '') ? 'active' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Manage
                             </a>
                             <ul class="dropdown-menu">

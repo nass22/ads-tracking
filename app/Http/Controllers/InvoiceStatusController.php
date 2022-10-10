@@ -40,9 +40,11 @@ class InvoiceStatusController extends Controller
             InvoiceStatus::create([
                 'name' => Str::upper($request->name)
             ]);
-            Alert::success('Success','Invoice Status successfully created.');
 
-            return redirect()->route('invoice_status.index');
+            // Alert::success('Success','Invoice Status successfully created.');
+            // return redirect()->route('invoice_status.index');
+            return redirect()->route('invoice_status.index')->with('success', 'Invoice successfully created.');
+
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
 
@@ -67,9 +69,11 @@ class InvoiceStatusController extends Controller
             
             $invoice_status->update();
             
-            Alert::success('Success','Invoice Status successfully updated.');
+            // Alert::success('Success','Invoice Status successfully updated.');
+            // return redirect()->route('invoice_status.index');
 
-            return redirect()->route('invoice_status.index');
+            return redirect()->route('invoice_status.index')->with('success', 'Invoice successfully updated.');
+
         } catch (\Throwable $th) {
             Alert::error('error', $th->getMessage());
             
@@ -82,9 +86,10 @@ class InvoiceStatusController extends Controller
     {
         try {
             $invoice_status->delete();
-            Alert::success('Success','Invoice Status successfully deleted.');
+            // Alert::success('Success','Invoice Status successfully deleted.');
+            // return redirect()->route('invoice_status.index');
+            return redirect()->route('invoice_status.index')->with('success', 'Invoice successfully deleted.');
 
-            return redirect()->route('invoice_status.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
             
