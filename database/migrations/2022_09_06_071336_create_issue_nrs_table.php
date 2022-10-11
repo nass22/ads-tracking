@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('media');
             $table->string('numero')->nullable();
             $table->string('year');
-            $table->string('month');
+            $table->string('month')->nullable();
             $table->string('day')->nullable();
             $table->string('week')->nullable();
             $table->string('final_issue');

@@ -206,16 +206,16 @@
                 $('#search_company').keyup(function(){
                     table.draw();
                 });
-                $('#search_job_id').keyup(function(){
+                $('#search_status').keyup(function(){
+                    table.draw();
+                });
+                $('#search_brand').keyup(function(){
                     table.draw();
                 });
                 $('#search_media').change(function(){
                     table.draw();
                 });
                 $('#search_issue_nr').change(function(){
-                    table.draw();
-                });
-                $('#search_status').keyup(function(){
                     table.draw();
                 });
             },

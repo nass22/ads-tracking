@@ -84,13 +84,16 @@
                             </a>
                             <ul class="dropdown-menu">
                                 @if (Auth::user()->role == "Admin")
-                                    {{-- <li><a class="dropdown-item" href="{{ route('insertions.index') }}">Insertions</a></li> --}}
                                     <li><a class="dropdown-item" href="{{ route('companies.index') }}">Companies</a></li>
                                     <li><a class="dropdown-item" href="{{ route('medias.index') }}">Media</a></li>
                                     <li><a class="dropdown-item" href="{{ route('invoice_status.index') }}">Invoice Status</a></li>
                                     <li><a class="dropdown-item" href="{{ route('issue_nr.index') }}">Issue</a></li>
                                     <li><a class="dropdown-item" href="{{ route('users.index') }}">Users</a></li>
                                     <li><a class="dropdown-item" href="{{ route('roles.index') }}">Roles</a></li>
+                                @elseif (Auth::user()->role == "Project Leader")
+                                    <li><a class="dropdown-item" href="{{ route('companies.index') }}">Companies</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('medias.index') }}">Media</a></li>
+                                    <li><a class="dropdown-item" href="{{ route('issue_nr.index') }}">Issue</a></li>
                                 @elseif (Auth::user()->role != "Admin")
                                     <li><a class="dropdown-item" href="{{ route('companies.index') }}">Companies</a></li>
                                  @endif
