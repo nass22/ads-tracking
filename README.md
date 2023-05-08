@@ -1,11 +1,9 @@
-<p align="center">Insertion Plan App</p>
+## <p align="center">Insertion Plan App</p>
 
 <p align="center">
 </p>
 
-## About Laravel
-
-<p>Creation of an app to manage ads</p>
+<p align="center">Creation of an app to manage ads</p>
 
 
 
